@@ -1,0 +1,88 @@
+/* لإتاحة Tailwind وألوان المشروع داخل هذا الملف */
+@reference "../index.css";
+
+/* الخط والألوان الأساسية */
+.new-voucher-grid .dx-datagrid {
+  font-family: inherit;
+  color: var(--color-primary-text, #223247);
+  background-color: var(--color-card-background, #ffffff);
+  @apply text-sm;
+}
+
+/* الحدود الخارجية */
+.new-voucher-grid .dx-datagrid-borders > .dx-datagrid-headers,
+.new-voucher-grid .dx-datagrid-borders > .dx-datagrid-rowsview,
+.new-voucher-grid .dx-datagrid-borders > .dx-datagrid-total-footer {
+  border-color: var(--color-control-border, #d1def0);
+}
+
+/* عناوين الأعمدة */
+.new-voucher-grid .dx-header-row > td {
+  background-color: var(--color-table-header, #eaf0f8);
+  color: var(--color-accent, #294f80);
+  @apply px-3 py-4 font-bold leading-snug;
+}
+
+/* أيقونات الفرز والفلترة */
+.new-voucher-grid .dx-header-filter,
+.new-voucher-grid .dx-sort {
+  color: var(--color-muted-text, #718096);
+}
+
+/* صف خانات الفلترة */
+.new-voucher-grid .dx-filter-row > td {
+  background-color: var(--color-card-background, #ffffff);
+}
+
+/* خلايا البيانات */
+.new-voucher-grid .dx-data-row > td {
+  @apply px-2 py-3 align-middle;
+}
+
+/* خلفية الصفوف العادية */
+.new-voucher-grid
+  .dx-data-row:not(.dx-selection):not(.dx-row-focused):not(.dx-state-hover)
+  > td {
+  background-color: var(--color-card-background, #ffffff);
+}
+
+/* خلفية الصفوف المتناوبة */
+.new-voucher-grid
+  .dx-data-row.dx-row-alt:not(.dx-selection):not(.dx-row-focused):not(.dx-state-hover)
+  > td {
+  background-color: var(--color-table-stripe, #f8fafc);
+}
+
+/* حدود الخلايا، بما فيها خلايا الإجماليات */
+.new-voucher-grid .dx-header-row > td,
+.new-voucher-grid .dx-filter-row > td,
+.new-voucher-grid .dx-data-row > td,
+.new-voucher-grid .dx-total-footer > td {
+  border-color: var(--color-control-border, #d1def0);
+  @apply border-b border-e;
+}
+
+/* عمود رقم السطر غير القابل للتعديل */
+.new-voucher-grid
+  .dx-data-row:not(.dx-selection):not(.dx-row-focused):not(.dx-state-hover)
+  > td.new-voucher-readonly {
+  background-color: var(--color-page-background, #f1f5f9);
+  color: var(--color-muted-text, #718096);
+}
+
+/* منطقة الإجماليات */
+.new-voucher-grid .dx-datagrid-total-footer {
+  background-color: var(--color-page-background, #f4f7fb);
+  border-color: var(--color-control-border, #d1def0);
+}
+
+/* خلايا الإجماليات: الخطوط تكمّل تحت الأعمدة */
+.new-voucher-grid .dx-total-footer > td {
+  @apply px-2 py-3 align-top;
+}
+
+/* نص الإجماليات */
+.new-voucher-grid .dx-datagrid-summary-item {
+  color: var(--color-primary-text, #223247);
+  @apply whitespace-normal text-xs font-semibold leading-relaxed;
+}

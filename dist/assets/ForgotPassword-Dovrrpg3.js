@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./preload-helper-I0klHKsU.js";import{t as n}from"./EmailRequestPage-xkpEOBjX.js";var r=e();function i(){let{t:e}=t();return(0,r.jsx)(n,{title:e(`forgotPassword`),description:e(`forgotDescription`),titleId:`forgot-password-title`,action:`/forgot-password`,buttonLabel:e(`sendReset`)})}export{i as default};

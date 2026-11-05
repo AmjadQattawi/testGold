@@ -1,0 +1,6 @@
+{
+  "sideEffects": false,
+  "main": "../../cjs/events/hover.js",
+  "module": "../../esm/events/hover.js",
+  "typings": "../hover.d.ts"
+}

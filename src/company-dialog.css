@@ -1,0 +1,133 @@
+.company-dialog {
+  margin: auto;
+  width: min(34rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  border: 1px solid var(--color-control-border);
+  border-radius: 24px;
+  padding: 0;
+  background: var(--color-elevated-background);
+  color: var(--color-primary-text);
+  box-shadow: 0 24px 80px var(--color-card-shadow);
+}
+
+.company-dialog::backdrop {
+  background: var(--color-modal-overlay);
+  backdrop-filter: blur(5px);
+}
+
+.company-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 28px 18px;
+}
+
+.company-dialog-brand, .company-option-logo {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--color-accent-background);
+  border: 1px solid var(--color-control-border);
+  border-radius: 16px;
+}
+
+.company-dialog-brand {
+  width: 60px;
+  height: 60px;
+}
+
+.company-dialog-brand img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.company-dialog-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: var(--color-secondary-text);
+  cursor: pointer;
+}
+
+.company-dialog-close:hover {
+  background: var(--color-accent-background);
+}
+
+.company-list {
+  display: grid;
+  gap: 12px;
+  max-height: min(45dvh, 380px);
+  overflow: auto;
+  padding: 3px 28px 6px;
+}
+
+.company-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.company-option:hover, .company-option:has(input:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-background);
+}
+
+.company-option:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.company-option:has(input:disabled) {
+  opacity: .65;
+  cursor: wait;
+}
+
+.company-option-logo {
+  width: 48px;
+  height: 48px;
+  background: var(--color-card-background);
+  border-radius: 12px;
+}
+
+.company-option-logo img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.company-option-check {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--color-control-border);
+  border-radius: 50%;
+  color: transparent;
+}
+
+.company-option:has(input:checked) .company-option-check {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-button-text);
+}
+
+.company-dialog-footer {
+  margin-top: 22px;
+  border-top: 1px solid var(--color-control-border);
+  padding: 20px 28px 26px;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .company-option {
+    transition: none;
+  }
+}

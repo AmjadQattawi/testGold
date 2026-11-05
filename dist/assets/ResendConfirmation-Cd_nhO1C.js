@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./preload-helper-I0klHKsU.js";import{t as n}from"./EmailRequestPage-xkpEOBjX.js";var r=e();function i(){let{t:e}=t();return(0,r.jsx)(n,{title:e(`resendTitle`),description:e(`resendDescription`),titleId:`resend-confirmation-title`,action:`/resend-confirmation`,buttonLabel:e(`resendButton`)})}export{i as default};

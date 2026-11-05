@@ -1,0 +1,1 @@
+import{c as e,o as t}from"./preload-helper-I0klHKsU.js";import{v as n}from"./App-DD01Pl84.js";var r=e(t(),1);function i(e){let{showToast:t}=n(),i=(0,r.useRef)(void 0);(0,r.useEffect)(()=>{i.current!==e&&(i.current=e,e&&!e.isError&&!e.errors&&(e.message||e.messageKey)&&t({message:e.message,messageKey:e.messageKey}))},[e,t])}export{i as t};

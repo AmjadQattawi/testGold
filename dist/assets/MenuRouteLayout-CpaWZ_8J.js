@@ -1,0 +1,1 @@
+import{n as e}from"./preload-helper-I0klHKsU.js";import{v as t}from"./index-CD84N4Wu.js";import n from"./AppLayout-CsfGP-Hn.js";import{t as r}from"./NotFound-COVvYlU1.js";var i=e();function a(){return t()?(0,i.jsx)(n,{}):(0,i.jsx)(r,{})}export{a as default};

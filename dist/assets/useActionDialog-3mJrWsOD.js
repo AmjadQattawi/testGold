@@ -1,0 +1,1 @@
+import{c as e,o as t}from"./preload-helper-I0klHKsU.js";import{t as n}from"./i18n-BNM0ih5q.js";import{_ as r}from"./App-DD01Pl84.js";var i=e(t(),1);function a(e){let{showDialog:t,closeDialog:a}=r();(0,i.useEffect)(()=>{e?.isError&&e.message&&t({title:n.t(`requestUnsuccessful`),message:e.message,variant:`error`})},[e,t]),(0,i.useEffect)(()=>()=>a(),[a])}export{a as t};

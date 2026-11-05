@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem("testGold.theme"); } catch {}
+        document.documentElement.dataset.theme = theme === "light" || theme === "dark"
+          ? theme : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      })();
+    </script>
+    <link rel="icon" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>testGold · 22-Gold</title>
+    <script type="module" crossorigin src="/assets/index-CD84N4Wu.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/preload-helper-I0klHKsU.js">
+    <link rel="modulepreload" crossorigin href="/assets/i18n-BNM0ih5q.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-Db6vdx1K.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
