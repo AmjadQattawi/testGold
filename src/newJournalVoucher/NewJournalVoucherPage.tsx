@@ -97,7 +97,7 @@ function NewJournalVoucherForm({ companyId }: { companyId: string }) {
         )}
         <VoucherToolbar actions={voucher.actions} />
       </form>
-
+<div></div>
     
     </div>
   );
