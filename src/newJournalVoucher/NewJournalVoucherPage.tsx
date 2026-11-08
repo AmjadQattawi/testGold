@@ -54,7 +54,7 @@ function NewJournalVoucherForm({ companyId }: { companyId: string }) {
     event.preventDefault();
     nextField.focus();
   }
- 
+
   return (
     <div className="flex w-full min-h-0 min-w-0 max-w-none flex-1 flex-col text-primary-text print:pb-0">
       <form
@@ -97,8 +97,9 @@ function NewJournalVoucherForm({ companyId }: { companyId: string }) {
         )}
         <VoucherToolbar actions={voucher.actions} />
       </form>
-<div></div>
-    
+      <div>
+        <h1>test</h1>
+      </div>
     </div>
   );
 }
