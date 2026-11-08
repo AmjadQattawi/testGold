@@ -11,6 +11,7 @@ import DataGrid, {
   TotalItem,
   Paging,
   KeyboardNavigation,
+  type DataGridTypes,
 } from "devextreme-react/data-grid";
 import type { NewVoucherLine } from "./NewJournalVoucherUtils";
 import type { NewVoucherColumn } from "./NewVoucherColumns";
@@ -61,8 +62,166 @@ export default function NewGrid({
     rowId: string;
     field: string;
   } | null>(null);
-  const gridWrapperRef = useRef<HTMLDivElement>(null);
 
+  const gridWrapperRef = useRef<HTMLDivElement>(null);
+  const pendingCell = useRef<{ rowId: string; field?: string } | null>(null);
+
+  // بتحدد وين نروح وبتحفظ الطلب
+  async function handleGridKeyDown(e: DataGridTypes.KeyDownEvent) {
+    const event = e.event;
+    if (!event || event.key !== "Enter" || event.defaultPrevented) return;
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    // هل الضغطة نفسها صارت داخل خلية مفتوحة للتعديل
+    // مثلا ال حقل الفلترة مش مفتوح للتعديل
+    if (!target.closest("td.dx-editor-cell")) return;
+
+    const editor = activeEditor.current;
+    if (!editor) return;
+    const { rowId, field } = editor;
+    const editableColumns = e.component
+      .getVisibleColumns()
+      .filter(
+        (column) =>
+          typeof column.dataField === "string" && column.allowEditing !== false,
+      );
+    const currentIndex = editableColumns.findIndex(
+      (column) => column.dataField === field,
+    );
+    if (currentIndex === -1) return;
+    const nextColumn = editableColumns[currentIndex + 1];
+    // اذا ما في عامود بعد الحالي يعني وصلت عند ال notes مثلا بكون undefined ال next
+    const nextField = nextColumn?.dataField;
+    //  Enter خلي
+    //  يختار من القائمة إذا كانت مفتوحة.
+    if (target.closest('[aria-expanded="true"]')) return;
+    e.handled = true;
+    event.preventDefault();
+    const grid = e.component;
+    // حل المشكلة
+    // إذا فيه تعديل، احفظه. إذا ما فيه، كمّل التنقّل مباشرة
+    if (grid.hasEditData()) {
+      await grid.saveEditData();
+      // await grid.saveEditData();
+    }
+    if (grid.hasEditData()) return;
+    pendingCell.current = { rowId, field: nextField };
+    openPendingCell(grid);
+  }
+
+  // بتنفّذ الطلب لما تلاقي السطر بالجدول
+  function openPendingCell(grid: DataGridTypes.ContentReadyEvent["component"]) {
+    // Id الصف + field  اللي بدنا ننتقل الها
+    const next = pendingCell.current;
+    if (!next) return;
+    let rowIndex = grid.getRowIndexByKey(next.rowId);
+    if (rowIndex < 0) return;
+    let field = next.field;
+    // اذا اخر فيلد ومافي بعده سطر
+    // بفحص اذا في سطر بعده 
+    if (field === undefined) {
+      const visibleRows = grid
+        .getVisibleRows()
+        .filter((row) => row.rowType === "data");
+      const currentIndex = visibleRows.findIndex(
+        (row) => row.key === next.rowId,
+      );
+      if (currentIndex < 0) return;
+      const nextRow = visibleRows[currentIndex + 1];
+
+      // إذا ما فيه صف ظاهر بعد الحالي، روح على Post
+      if (!nextRow) {
+        pendingCell.current = null;
+        const form = gridWrapperRef.current?.closest("form");
+        const postButton = form?.querySelector<HTMLButtonElement>(
+          '[data-voucher-action="post"]:not(:disabled)',
+        );
+        postButton?.focus();
+        return;
+      }
+
+      // في صف 
+      rowIndex = grid.getRowIndexByKey(nextRow.key);
+      if (rowIndex < 0) return;
+      // بتختار اول فيلد عامود بطلع بوجها بطابق الشروط 
+      field = grid
+        .getVisibleColumns()
+        .find(
+          (column) =>
+            typeof column.dataField === "string" &&
+            column.allowEditing !== false,
+        )?.dataField;
+    }
+    pendingCell.current = null;
+    if (field !== undefined) {
+      grid.editCell(rowIndex, field);
+    }
+  }
+
+  function handleSelectionChanged(e: DataGridTypes.SelectionChangedEvent) {
+    onSelectionChange(e.selectedRowKeys);
+  }
+
+  function handleSaving(e: DataGridTypes.SavingEvent) {
+    if (e.changes.length === 0) return;
+    e.cancel = true;
+    for (const change of e.changes) {
+      if (change.type === "update") {
+        onChangeLine(change.key, change.data);
+      }
+    }
+    // حل المشكلة
+    e.component.option("editing.changes", []);
+  }
+
+  // عشان لو تغير السطر تنادي
+  // onRowLeave     عشان تضيف السطر لل validatedRows  ويظهر ال error اذا كان موجود
+  // onRowEnter     عشان بس يرجع يفوت السطر ينشال من ال validatedRows ف بروح ال error اذا كان موجود
+  function handleFocusedCellChanged(e: DataGridTypes.FocusedCellChangedEvent) {
+    if (e.row?.rowType !== "data") return;
+    const currentRowId = e.row.key as string;
+    const previousId = previousRowId.current;
+    if (previousId === currentRowId) return;
+    previousRowId.current = currentRowId;
+    if (previousId !== null) {
+      onRowLeave(previousId);
+    }
+    onRowEnter(currentRowId);
+  }
+
+  // لوّن خلية البيانات عند تجهيزها إذا كان عليها خطأوالجدث نفسه مرتبط ب تجهيزها
+  function handleCellPrepared(e: DataGridTypes.CellPreparedEvent) {
+    if (e.rowType !== "data" || !(e.cellElement instanceof HTMLElement)) return;
+    const hasError =
+      e.key === lockedRowId &&
+      errorColumns.some((field) => field === e.column.dataField);
+    e.cellElement.classList.toggle("voucher-cell-error", hasError);
+  }
+
+  // بتخلي الجدول يعرف قيمة الفيلد اثناء الكتابة عليه مش لما اطلع منه بس
+  function handleEditorPreparing(e: DataGridTypes.EditorPreparingEvent) {
+    if (e.parentType !== "dataRow") return;
+    if (e.editorName === "dxNumberBox" || e.editorName === "dxTextBox") {
+      e.editorOptions.valueChangeEvent = "input";
+    }
+  }
+
+  //rowId + field  بتشتغل اول ما ادخل عالفيلد وبتخزنلي ال
+  function handleEditingStart(e: DataGridTypes.EditingStartEvent) {
+    if (lockedRowId !== undefined && e.key !== lockedRowId) {
+      e.cancel = true;
+      return;
+    }
+    const field = e.column?.dataField;
+    activeEditor.current =
+      typeof e.key === "string" && typeof field === "string"
+        ? { rowId: e.key, field }
+        : null;
+  }
+
+  // عشان ال error يظهر عالفيلد لو كبست برا الجدول
+  // هدفه يسمع الكبسات برا الجدول
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       // هو الـ <div> اللي مغلّف الجدول.
@@ -84,7 +243,7 @@ export default function NewGrid({
       document.removeEventListener("click", handleOutsideClick, true);
     };
   }, [onRowLeave]);
-  
+
   return (
     <div
       className="min-h-0 min-w-0 flex-1 overflow-hidden"
@@ -104,91 +263,14 @@ export default function NewGrid({
         // allowColumnResizing={true}
         // columnResizingMode="widget"
         selectedRowKeys={selectedIds}
-        onSelectionChanged={(e) => {
-          onSelectionChange(e.selectedRowKeys);
-        }}
-        onSaving={(e) => {
-          e.cancel = true;
-          for (const change of e.changes) {
-            if (change.type === "update") {
-              onChangeLine(change.key, change.data);
-            }
-          }
-          e.component.cancelEditData();
-        }}
-        onFocusedCellChanged={(e) => {
-          if (e.row?.rowType !== "data") return;
-          const currentRowId = e.row.key as string;
-          const previousId = previousRowId.current;
-          if (previousId === currentRowId) return;
-          previousRowId.current = currentRowId;
-          if (previousId !== null) {
-            onRowLeave(previousId);
-          }
-          onRowEnter(currentRowId);
-        }}
-        onEditingStart={(e) => {
-          if (lockedRowId !== undefined && e.key !== lockedRowId) {
-            e.cancel = true;
-            return;
-          }
-
-          const field = e.column?.dataField;
-          activeEditor.current =
-            typeof e.key === "string" && typeof field === "string"
-              ? { rowId: e.key, field }
-              : null;
-        }}
-        onCellPrepared={(e) => {
-          if (e.rowType !== "data" || !(e.cellElement instanceof HTMLElement))
-            return;
-          const hasError =
-            e.key === lockedRowId &&
-            errorColumns.some((field) => field === e.column.dataField);
-
-          e.cellElement.classList.toggle("voucher-cell-error", hasError);
-        }}
-        onKeyDown={async (e) => {
-          const event = e.event;
-          if (!event || event.key !== "Enter" || event.defaultPrevented) return;
-
-          const editor = activeEditor.current;
-          const target = event.target;
-
-          if (!editor || !(target instanceof HTMLElement)) return;
-          if (!target.closest("td.dx-editor-cell")) return;
-
-          const { rowId, field } = editor;
-          if (field !== "debit" && field !== "credit" && field !== "account")
-            return;
-
-          // إذا قائمة الحساب مفتوحة، خلي Enter يختار الخيار.
-          if (field === "account" && target.closest('[aria-expanded="true"]'))
-            return;
-
-          e.handled = true;
-          event.preventDefault();
-
-          const form = target.closest("form");
-          const grid = e.component;
-
-          await grid.saveEditData();
-          if (grid.hasEditData()) return;
-
-          if (field === "account") {
-            form
-              ?.querySelector<HTMLButtonElement>(
-                '[data-voucher-action="post"]:not(:disabled)',
-              )
-              ?.focus();
-            return;
-          }
-
-          const rowIndex = grid.getRowIndexByKey(rowId);
-          if (rowIndex < 0) return;
-
-          grid.editCell(rowIndex, field === "debit" ? "credit" : "account");
-        }}
+        onSelectionChanged={handleSelectionChanged}
+        onSaving={handleSaving}
+        onFocusedCellChanged={handleFocusedCellChanged}
+        onCellPrepared={handleCellPrepared}
+        onEditorPreparing={handleEditorPreparing}
+        onEditingStart={handleEditingStart}
+        onKeyDown={handleGridKeyDown}
+        onContentReady={(e) => openPendingCell(e.component)}
       >
         <Editing mode="cell" allowUpdating={true} />
         <KeyboardNavigation

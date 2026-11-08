@@ -134,8 +134,8 @@ export default function AppLayout() {
               <div className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[10px] text-secondary-text sm:text-[11px]">
                 {/* ------------------------------------ */}
                 <Link
-                  // to="/accountingTrans/GeneralVoucher"
-                  to="/accountingTrans/newJournalVoucher"
+                  to="/accountingTrans/GeneralVoucher"
+                  // to="/accountingTrans/newJournalVoucher"
                   className={
                     "shrink-0 rounded transition-colors hover:text-accent " +
                     focusClasses
