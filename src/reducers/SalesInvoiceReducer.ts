@@ -6,11 +6,24 @@ import type {
   ServiceMaterialLine,
 } from "../utils/salesInvoice";
 
+export type InvoiceTable = "jewelry" | "goldBoxes" | "services" | "gemstones";
+
 export type SalesInvoiceState = {
   draft: SalesInvoiceDraft;
   saved: SalesInvoiceDraft[];
+  selectedIds: Record<InvoiceTable, string[]>;
 };
 
+// function emptySelection(): Record<InvoiceTable, string[]> {
+
+function emptySelection(): SalesInvoiceState["selectedIds"] {
+  return {
+    jewelry: [],
+    goldBoxes: [],
+    services: [],
+    gemstones: [],
+  };
+}
 export type InvoiceFieldName =
   | "date"
   | "number"
@@ -56,13 +69,26 @@ export type SalesInvoiceAction =
       id: string;
       key: keyof GemstoneCollectionLine;
       value: string;
-    };
+    }
+  | {
+      type: "rowsSelected";
+      table: InvoiceTable;
+      ids: string[];
+    }
+  | { type: "selectedRowsDeleted"; table: InvoiceTable };
+
+const rowKeyByTable = {
+  jewelry: "jewelryPiecesRow",
+  goldBoxes: "goldBoxesRow",
+  services: "serviceMaterialsRow",
+  gemstones: "gemstoneCollectionsRow",
+} as const satisfies Record<InvoiceTable, keyof SalesInvoiceDraft>;
 
 export function createSalesInvoiceState(
   draft: SalesInvoiceDraft,
   saved: SalesInvoiceDraft[],
 ): SalesInvoiceState {
-  return { draft, saved };
+  return { draft, saved, selectedIds: emptySelection() };
 }
 
 export function salesInvoiceReducer(
@@ -78,10 +104,20 @@ export function salesInvoiceReducer(
           [action.key]: action.value,
         },
       };
+    case "rowsSelected":
+      return {
+        ...state,
+        selectedIds: {
+          ...state.selectedIds,
+          [action.table]: action.ids,
+        },
+      };
+
     case "draftOpened":
       return {
         ...state,
         draft: action.draft,
+        selectedIds: emptySelection(),
       };
 
     case "jewelryPieceLineChanged":
@@ -123,22 +159,42 @@ export function salesInvoiceReducer(
         },
       };
 
-      case "gemstoneCollectionLineChanged":
-  if (action.key === "id" || action.key === "lineNo") return state;
+    case "gemstoneCollectionLineChanged":
+      if (action.key === "id" || action.key === "lineNo") return state;
 
-  return {
-    ...state,
-    draft: {
-      ...state.draft,
-      gemstoneCollectionsRow: state.draft.gemstoneCollectionsRow.map(
-        (row) =>
-          row.id === action.id
-            ? { ...row, [action.key]: action.value }
-            : row,
-      ),
-    },
-  };
+      return {
+        ...state,
+        draft: {
+          ...state.draft,
+          gemstoneCollectionsRow: state.draft.gemstoneCollectionsRow.map(
+            (row) =>
+              row.id === action.id
+                ? { ...row, [action.key]: action.value }
+                : row,
+          ),
+        },
+      };
 
+    case "selectedRowsDeleted": {
+      const ids = state.selectedIds[action.table];
+
+      if (ids.length === 0) return state;
+
+      const selected = new Set(ids);
+      const rowKey = rowKeyByTable[action.table];
+
+      return {
+        ...state,
+        draft: {
+          ...state.draft,
+          [rowKey]: state.draft[rowKey].filter((row) => !selected.has(row.id)),
+        },
+        selectedIds: {
+          ...state.selectedIds,
+          [action.table]: [],
+        },
+      };
+    }
 
     // end switch
   }

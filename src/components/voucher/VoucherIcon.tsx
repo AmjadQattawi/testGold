@@ -18,7 +18,12 @@ export type VoucherIconName =
   | "ascending"
   | "descending"
   | "unposted"
-  | "jewelry";
+  | "jewelry"
+  | "notebookPen"
+  | "vault"
+  | "wrench"
+  | "gemstones"
+  | "sparkles";
 const paths: Record<VoucherIconName, string> = {
   hash: "M9 3 7 21M17 3l-2 18M4 9h17M3 15h17",
   filter: "M3 4h18l-7 8v7l-4 2v-9L3 4Z",
@@ -40,7 +45,16 @@ const paths: Record<VoucherIconName, string> = {
   shield: "M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6l-9-4Zm-4 10 3 3 5-6",
   plus: "M12 5v14M5 12h14",
   jewelry:
-    "M3 8l3-4h12l3 4-9 12L3 8Zm0 0h18M6 4l3 4 3 12M18 4l-3 4-3 12M9 8l3-4 3 4",};
+    "M3 8l3-4h12l3 4-9 12L3 8Zm0 0h18M6 4l3 4 3 12M18 4l-3 4-3 12M9 8l3-4 3 4",
+  notebookPen:
+    "M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4M2 13h20M16 2l6 6M13.5 13.5 16 11l2 2-2.5 2.5L13 16l.5-2.5Z",
+  vault:
+    "M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm5-2h.01M7 15h.01",
+  wrench:
+    "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-7 7a2.1 2.1 0 0 1-3-3l7-7a6 6 0 0 1 7.9-7.9Z",
+  gemstones: "m8 2 5 6-5 6-5-6 5-6Zm9 8 5 6-5 6-5-6 5-6Z",
+  sparkles: "m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z",
+};
 export default function VoucherIcon({
   name,
   className = "",

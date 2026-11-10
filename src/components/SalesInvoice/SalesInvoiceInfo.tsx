@@ -3,25 +3,50 @@ import type { SalesInvoiceDraft } from "../../utils/salesInvoice";
 import { useTranslation } from "react-i18next";
 import type { InvoiceFieldName } from "../../reducers/SalesInvoiceReducer";
 import VoucherField from "../voucher/VoucherField";
+import type { ReactNode } from "react";
+import VoucherSection from "../voucher/VoucherSection";
+import VoucherIcon from "../voucher/VoucherIcon";
 
 const control =
   "h-8 w-full rounded-md border border-control-border bg-input-background px-3 text-[clamp(0.875rem,0.75rem+0.3vw,1rem)] text-primary-text outline-none focus:border-accent focus:ring-2 focus:ring-accent/15";
 export default function SalesInvoiceInfo({
   draft,
   change,
+  navigation
 }: {
   draft: SalesInvoiceDraft;
   change: (key: InvoiceFieldName, value: string) => void;
-  // navigation?: ReactNode;
-}) {
+  navigation?: ReactNode;
+}) { 
   const { t } = useTranslation();
   return (
-    <section
-    className=    "overflow-hidden rounded-md border border-control-border bg-card-background shadow-[0_5px_20px_var(--color-card-shadow)] print:shadow-none "  
-    
-    >
+    <VoucherSection 
+  title="بيانات الفاتورة"
+    className="shrink-0"
+  center={
+    <h1 className="text-lg font-bold text-primary-text">
+      فاتورة مبيعات
+    </h1>
+  }
+  status={
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-danger-border bg-danger-background px-2.5 py-1 text-[10px] font-medium text-danger">
+      <VoucherIcon name="unposted" className="size-3" />
+      {t("voucherUnposted")}
+    </span>
+  }
+  aside={
+    <div className="flex flex-wrap items-center gap-3">
+      <span className="text-[10px] text-muted-text">
+        {t("voucherRequired")}
+      </span>
+      {navigation}
+    </div>
+  }
+>
+ 
       <div className="space-y-3 p-4">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-7">
+
+         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-8">
           <VoucherField icon="calendar" label={t("voucherDate")} required>
             <input
               data-voucher-step="date"
@@ -51,7 +76,7 @@ export default function SalesInvoiceInfo({
           </VoucherField>
 
           {/* Account */}
-          <VoucherField label={"Accounts"} required>
+          <VoucherField label={"الحساب"} required>
             <select
               data-voucher-step="account"
               className={control}
@@ -69,7 +94,7 @@ export default function SalesInvoiceInfo({
 
 
           {/* Employee */}
-          <VoucherField label="Employee" required>
+          <VoucherField label="الموظف" required>
             <select
               data-voucher-step="employee"
               className={control}
@@ -86,7 +111,7 @@ export default function SalesInvoiceInfo({
 
 
           {/* Gold Price */}
-          <VoucherField label="Gold Price">
+          <VoucherField label="سعر الذهب">
             <input
               data-voucher-step="goldPrice"
               readOnly
@@ -99,6 +124,7 @@ export default function SalesInvoiceInfo({
 
           <VoucherField icon="shield" label={t("voucherSecurity")}>
             <select
+              data-voucher-step="Security"
               className={control}
               value={draft.confidentiality}
               onChange={(event) =>
@@ -109,11 +135,23 @@ export default function SalesInvoiceInfo({
               <option value="confidential">{t("voucherConfidential")}</option>
             </select>
           </VoucherField>
+
+
+          <VoucherField icon="notebookPen" label="الملاحظات">
+            <input
+              data-voucher-step="Description"
+              type="text"
+              className={control}
+              value={draft.notes}
+              // onChange={ }
+            />
+          </VoucherField>
+
         </div>
 
      
       </div>
-    </section>
+    </VoucherSection>
   );
 }
 

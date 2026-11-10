@@ -1,0 +1,96 @@
+/* Brand blue scale shared by both themes. */
+@theme {
+  --color-blue-50: #f4f7fb;
+  --color-blue-100: #eaf0f8;
+  --color-blue-200: #d3deed;
+  --color-blue-300: #afc2de;
+  --color-blue-400: #91add4;
+  --color-blue-500: #6388b9;
+  --color-blue-600: #41689b;
+  --color-blue-700: #254777;
+  --color-blue-800: #1e3a62;
+  --color-blue-900: #162b49;
+  --color-blue-950: #0c1728;
+  
+  --color-page-background: var(--color-blue-50);
+  --color-card-background: #ffffff;
+  --color-hover-background: var(--color-blue-100);
+  --color-accent: var(--color-blue-700);
+  --color-accent-hover: var(--color-blue-800);
+  --color-accent-background: var(--color-blue-100);
+  --color-accent-button-text: #ffffff;
+  --color-primary-text: #223247;
+  --color-secondary-text: #526681;
+  --color-brand-caption-text: #5c7090;
+  --color-muted-text: #61718a;
+  --color-subtle-text: #61718a;
+  --color-footer-text: #61718a;
+  --color-control-border: var(--color-blue-200);
+  --color-placeholder-text: #67788f;
+  --color-modal-overlay: rgb(12 23 40 / 42%);
+  --color-card-shadow: rgb(37 71 119 / 12%);
+  
+  --color-danger: #b33f3f;
+  --color-danger-background: #fff1f2;
+  --color-danger-border: #fecdd3;
+  --color-success: #23704f;
+  --color-success-background: #edf8f3;
+  --color-success-border: #b8dfcc;
+  
+  /* Flags preserve their national colors. */
+  --color-flag-uk-blue: #012169;
+  --color-flag-uk-red: #c8102e;
+  --color-flag-jordan-green: #007a3d;
+  --color-flag-jordan-red: #ce1126;
+  --color-flag-white: #ffffff;
+  --color-flag-black: #000000;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-page-background: var(--color-blue-950);
+  --color-card-background: #132238;
+  --color-hover-background: #20344f;
+  --color-accent: var(--color-blue-400);
+  --color-accent-hover: var(--color-blue-300);
+  --color-accent-background: #1c304d;
+  --color-accent-button-text: var(--color-blue-950);
+  --color-primary-text: #edf3fc;
+  --color-secondary-text: #c0cee2;
+  --color-brand-caption-text: #adbed8;
+  --color-muted-text: #a2b4cf;
+  --color-subtle-text: #a2b4cf;
+  --color-footer-text: #a2b4cf;
+  --color-control-border: #344b69;
+  --color-placeholder-text: #9aacC6;
+  --color-modal-overlay: rgb(3 9 19 / 70%);
+  --color-card-shadow: rgb(3 9 19 / 36%);
+  --color-danger: #f1a4a4;
+  --color-danger-background: #382331;
+  --color-danger-border: #754153;
+  --color-success: #86d4ad;
+  --color-success-background: #142f29;
+  --color-success-border: #315e4e;
+}
+
+@layer base {
+  body {
+    background: var(--color-page-background);
+    color: var(--color-primary-text);
+  }
+  
+  input, select, textarea {
+    color: var(--color-primary-text);
+    background-color: var(--color-card-background);
+    accent-color: var(--color-accent);
+  }
+  
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-button-text);
+  }
+}

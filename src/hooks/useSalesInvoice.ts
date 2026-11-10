@@ -3,6 +3,7 @@ import {
   createSalesInvoiceState,
   salesInvoiceReducer,
   type InvoiceFieldName,
+  type InvoiceTable,
 } from "../reducers/SalesInvoiceReducer";
 import {
   newSalesInvoice,
@@ -16,9 +17,7 @@ import {
   readDrafts,
   salesInvoiceStorageKey,
 } from "../services/salesInvoiceDraftStorage";
-import type {
-  VoucherAction as ToolbarAction,
-} from "../components/voucher/VoucherToolbar";
+import type { VoucherAction as ToolbarAction } from "../components/voucher/VoucherToolbar";
 export function useSalesInvoice(companyId: string) {
   const storageKey = salesInvoiceStorageKey(companyId);
 
@@ -30,6 +29,9 @@ export function useSalesInvoice(companyId: string) {
     dispatch({ type: "fieldChanged", key, value });
   }
 
+  function selectRows(table: InvoiceTable, ids: string[]) {
+    dispatch({ type: "rowsSelected", table, ids });
+  }
 
   function jewelryPieceLineChanged(
     id: string,
@@ -91,64 +93,65 @@ export function useSalesInvoice(companyId: string) {
     }
   }
 
+  function deleteSelectedRows(table: InvoiceTable) {
+    dispatch({ type: "selectedRowsDeleted", table });
+  }
 
-  // 
+  //
 
   const actions: ToolbarAction[] = [
-  {
-    id: "save",
-    label: "Save",
-    icon: "save",
-    type: "button",
-    variant: "primary",
-  },
-  {
-    id: "new",
-    label: "New",
-    icon: "new",
-  },
-  {
-    id: "post",
-    label: "Post",
-    icon: "send",
-  },
-  {
-    id: "delete",
-    label: "Delete",
-    icon: "trash",
-    variant: "danger",
-  },
-  {
-    id: "search",
-    label: "Search",
-    icon: "search",
-  },
-  {
-    id: "print",
-    label: "Print",
-    icon: "print",
-    onClick: () => window.print(),
-  },
-  {
-    id: "exit",
-    label: "Exit",
-    icon: "exit",
-  },
-  {
-    id: "archive",
-    label: "Archive",
-    icon: "archive",
-  },
-  {
-    id: "restore",
-    label: "Restore",
-    icon: "reset",
-  },
-];
+    {
+      id: "save",
+      label: "Save",
+      icon: "save",
+      type: "button",
+      variant: "primary",
+    },
+    {
+      id: "new",
+      label: "New",
+      icon: "new",
+    },
+    {
+      id: "post",
+      label: "Post",
+      icon: "send",
+    },
+    {
+      id: "delete",
+      label: "Delete",
+      icon: "trash",
+      variant: "danger",
+    },
+    {
+      id: "search",
+      label: "Search",
+      icon: "search",
+    },
+    {
+      id: "print",
+      label: "Print",
+      icon: "print",
+      onClick: () => window.print(),
+    },
+    {
+      id: "exit",
+      label: "Exit",
+      icon: "exit",
+    },
+    {
+      id: "archive",
+      label: "Archive",
+      icon: "archive",
+    },
+    {
+      id: "restore",
+      label: "Restore",
+      icon: "reset",
+    },
+  ];
 
-    // 
-
-
+  //
 
   return {
     state,
@@ -159,6 +162,8 @@ export function useSalesInvoice(companyId: string) {
     goldBoxLineChanged,
     serviceMaterialLineChanged,
     gemstoneCollectionLineChanged,
-    actions
+    actions,
+    selectRows,
+    deleteSelectedRows,
   };
 }

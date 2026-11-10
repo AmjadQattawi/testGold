@@ -1,82 +1,61 @@
 import EditableTable from "../voucher/EditableTable";
-import VoucherSection from "../voucher/VoucherSection";
-import { jewelryPiecesColumns } from "./jewelryPiecesColumns";
 import type { JewelryPieceLine } from "../../utils/salesInvoice";
-import { useState } from "react";
-
+import { jewelryPiecesColumns } from "./TableColumns";
+import InvoiceTableSummaries from "./InvoiceTableSummaries";
+import SalesInvoiceTableSection from "./SalesInvoiceTableSection";
 export default function JewelryPiecesTable({
   rows,
   changeLine,
+  isOpen,
+  onToggle,
+  selection,
+  onDeleteSelected,
 }: {
   rows: JewelryPieceLine[];
   changeLine: (id: string, key: keyof JewelryPieceLine, value: string) => void;
+  isOpen: boolean;
+  onToggle: () => void;
+  selection: {
+    ids: string[];
+    onChange: (ids: string[]) => void;
+  };
+  onDeleteSelected: () => void
 }) {
-  const [isOpen, setIsOpen] = useState(true);
   return (
-   <VoucherSection
-    title="Jewelry Pieces"
-    icon="jewelry"
-    className="
-    [&>header]:min-h-0
-    [&>header]:bg-accent
-    [&>header]:bg-none
-    [&>header]:px-4
-    [&>header]:py-2
-    [&>header_h2]:text-white
-    [&>header_h2]:text-sm
-    [&>header_h2_svg]:size-5
-    [&>header_h2_svg]:text-white
-  "
-  status={
-    <span className="text-xs text-white/75">
-      Total: <strong className="text-sm text-white">1,440.00</strong>
-    </span>
-  }
-  aside={
-    <div className="flex items-center gap-2 ">
-      <button
-        type="button"
-        className="inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-xs font-semibold text-blue-800 hover:bg-blue-100"
-      >
-        <span className="text-base leading-none">+</span>
-        Add Piece
-      </button>
-
-      <button
-        type="button"
-        onClick={() => setIsOpen((previous) => !previous)}
-        aria-expanded={isOpen}
-        aria-label={
-          isOpen ? "Collapse Jewelry Pieces" : "Expand Jewelry Pieces"
-        }
-        className="rounded-md p-1 text-white hover:bg-white/15"
-      >
-        <svg
-          className={`size-5 transition-transform ${isOpen ? "rotate-180" : ""}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-      </button>
-    </div>
-  }
->
-      <div hidden={!isOpen}>
-        <EditableTable
-        
-          rows={rows}
-          columns={jewelryPiecesColumns}
-          caption="Jewelry pieces"
-          rowLabel={(index) => `Row ${index + 1}`}
-          onChange={changeLine}
-          tableMinWidth="min-w-[3200px]"
-          containerClassName="max-h-45 "
-        />
-      </div>
-    </VoucherSection>
+    <SalesInvoiceTableSection
+      title="قطع المجوهرات"
+      icon="jewelry"
+      rowCount={rows.length}
+      total="1,440.00"
+      isOpen={isOpen}
+      onToggle={onToggle}
+      selectedCount={selection.ids.length}
+      onDeleteSelected={onDeleteSelected}
+    >
+      <EditableTable
+        rows={rows}
+        columns={jewelryPiecesColumns}
+        caption="Jewelry pieces"
+        rowLabel={(index) => `Row ${index + 1}`}
+        onChange={changeLine}
+        tableMinWidth="min-w-[2400px]"
+        containerClassName="max-h-45"
+        selection={selection}
+      />
+      <InvoiceTableSummaries
+        summaries={[
+          { key: "goldWeight", label: "وزن الذهب", value: "13.9500" },
+          { key: "grossWeight", label: "الوزن القائم", value: "14.2000" },
+          { key: "saleAlloy", label: "الحلة / بيع", value: "0.7900" },
+          { key: "salePrice", label: "سعر البيع", value: "1440.00" },
+          { key: "alloy", label: "الحلة", value: "0.7900" },
+          { key: "wages", label: "الأجور", value: "60.00" },
+          { key: "diamondWeight", label: "وزن الماس", value: "0.2500" },
+          { key: "coloredWeight", label: "وزن ملون", value: "0.1000" },
+          { key: "diamondCount", label: "عدد الماس", value: 4 },
+          { key: "coloredCount", label: "عدد ملون", value: 2 },
+        ]}
+      />
+    </SalesInvoiceTableSection>
   );
 }

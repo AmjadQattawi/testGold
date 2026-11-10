@@ -10,7 +10,7 @@ import DataGrid, {
   Summary,
   TotalItem,
   Paging,
-  KeyboardNavigation,
+ 
   type DataGridTypes,
 } from "devextreme-react/data-grid";
 import type { NewVoucherLine } from "./NewJournalVoucherUtils";
@@ -246,7 +246,7 @@ export default function NewGrid({
 
   return (
     <div
-      className="min-h-0 min-w-0 flex-1 overflow-hidden"
+      className="min-h-0 min-w-0 flex-1 overfl"
       ref={gridWrapperRef}
     >
       <DataGrid
@@ -254,7 +254,7 @@ export default function NewGrid({
         dataSource={rows}
         ref={gridRef}
         width="100%"
-        height="auto"
+        height="100%"
         keyExpr="id"
         showBorders={true}
         showColumnLines={true}
@@ -273,11 +273,6 @@ export default function NewGrid({
         onContentReady={(e) => openPendingCell(e.component)}
       >
         <Editing mode="cell" allowUpdating={true} />
-        <KeyboardNavigation
-          enterKeyAction="moveFocus"
-          enterKeyDirection="none"
-          editOnKeyPress={true}
-        />
         <FilterRow visible={true} showOperationChooser={true} />
         {/* <Selection
           mode={lockedRowId === undefined ? "multiple" : "none"}
@@ -289,7 +284,7 @@ export default function NewGrid({
           mode="standard"
           useNative={false}
           showScrollbar="onHover"
-        />{" "}
+        />
         <Paging enabled={false} />
         {columns.map(
           ({ options, min, requiredMark, placeholder, ...column }) => (

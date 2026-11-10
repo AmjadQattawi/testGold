@@ -75,7 +75,7 @@ const routes: RouteObject[] = [
             .default,
         }),
         loader: selectedCompanyLoader,
-      },
+      }, 
 
       {
         path: "accountingTrans/SalesInvoice",

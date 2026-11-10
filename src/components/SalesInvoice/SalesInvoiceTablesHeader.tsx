@@ -20,7 +20,7 @@ export default function SalesInvoiceTablesHeader({
 
   return (
     <div className="  ">
-  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-start">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-start">
         {/* Add Item */}
         <div className="min-w-0">
           <label
@@ -30,7 +30,7 @@ export default function SalesInvoiceTablesHeader({
             Add Item
           </label>
 
-       <div className="min-w-0 w-full sm:w-60">
+          <div className="min-w-0 w-full sm:w-60">
             <input
               id={addItemId}
               data-voucher-step="addItem"
@@ -55,7 +55,7 @@ export default function SalesInvoiceTablesHeader({
         </div>
 
         {/* Sale Price Distribution */}
-       <div className="min-w-0 w-full sm:w-60">
+        <div className="min-w-0 w-full sm:w-60">
           <label
             htmlFor={distributionId}
             className="mb-1.5 block text-xs font-semibold text-secondary-text"

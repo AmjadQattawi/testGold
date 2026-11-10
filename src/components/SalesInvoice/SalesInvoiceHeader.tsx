@@ -6,7 +6,7 @@ export default function SalesInvoiceHeader({
   selectedIndex,
   jump,
 }: {
-  saved: SalesInvoiceDraft[];
+  saved: SalesInvoiceDraft[]; 
   selectedIndex: number;
   jump: (index: number) => void;
 }) {
