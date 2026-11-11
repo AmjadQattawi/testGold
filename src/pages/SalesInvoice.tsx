@@ -50,6 +50,11 @@ export function SalesInvoiceForm({ companyId }: { companyId: string }) {
           }
         />
 
+ 
+
+
+ 
+
         <div className="grid min-h-0 flex-1 grid-cols-12 grid-rows-[minmax(0,1fr)] gap-3 ">
           {/* Tables */}
           {/* bg-slate-100 p-1 shadow-[0_0_8px_1px_#25477733] */}
