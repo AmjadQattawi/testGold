@@ -12,9 +12,9 @@ export default function VoucherInfo({
   change,
   navigation,
 }: {
-  draft: VoucherDraft;
+  draft: VoucherDraft; 
   change: (key: VoucherFieldName, value: string) => void;
-  navigation?: ReactNode;
+  navigation?: ReactNode; 
 }) {
   const { t } = useTranslation();
   return (

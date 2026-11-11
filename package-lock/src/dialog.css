@@ -1,0 +1,95 @@
+.app-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  padding: 0;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  border: 1px solid var(--color-control-border);
+  border-radius: 16px;
+  background: var(--color-card-background);
+  color: var(--color-primary-text);
+  box-shadow: 0 24px 80px var(--color-modal-overlay);
+  overflow: auto;
+}
+
+.app-dialog::backdrop {
+  background: var(--color-modal-overlay);
+  backdrop-filter: blur(4px);
+}
+
+.app-dialog-accent {
+  height: 4px;
+  background: var(--color-accent);
+}
+
+.app-dialog-body {
+  padding: 28px;
+}
+
+.app-dialog-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.app-dialog-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: var(--color-accent-background);
+  color: var(--color-accent);
+}
+
+.app-dialog-close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: var(--color-secondary-text);
+  cursor: pointer;
+}
+
+.app-dialog-close:hover {
+  background: var(--color-page-background);
+}
+
+.app-dialog h2 {
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.app-dialog p {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-secondary-text);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.app-dialog-confirm {
+  width: 100%;
+  margin-top: 26px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: var(--color-accent);
+  color: var(--color-accent-button-text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.app-dialog-confirm:hover {
+  background: var(--color-accent-hover);
+}
+
+.app-dialog button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}

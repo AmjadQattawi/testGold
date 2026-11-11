@@ -26,7 +26,7 @@ function JournalVoucherForm({ companyId }: { companyId: string }) {
           <JournalVoucherHeader saved={saved} selectedIndex={voucher.selectedIndex} jump={voucher.jump} />
         } />
         <VoucherDetails
-          draft={draft} 
+          draft={draft}
           selectedIds={selectedIds}
           totals={voucher.totals}
           blockedRow={voucher.blockedRow}
