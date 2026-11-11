@@ -71,6 +71,7 @@ export function voucherReducer(
         ...state,
         draft: { ...state.draft, [action.key]: action.value },
       };
+
     case "lineChanged": {
       if (action.key === "id" || action.key === "lineNo") return state;
       const rows = updateVoucherLine(
@@ -84,6 +85,7 @@ export function voucherReducer(
         ? state
         : { ...state, draft: { ...state.draft, rows } };
     }
+
     case "rowsSelected":
       return state.draft.rows.some((row) => voucherLineError(row))
         ? state
@@ -93,6 +95,12 @@ export function voucherReducer(
               state.draft.rows.some((row) => row.id === id),
             ),
           };
+ 
+
+
+
+
+
     case "selectedRowsDeleted": {
       if (!state.selectedIds.length) return state;
       const rows = deleteVoucherLines(

@@ -18,7 +18,9 @@ import {
   salesInvoiceStorageKey,
 } from "../services/salesInvoiceDraftStorage";
 import type { VoucherAction as ToolbarAction } from "../components/voucher/VoucherToolbar";
+import { useTranslation } from "react-i18next";
 export function useSalesInvoice(companyId: string) {
+    const { t } = useTranslation();
   const storageKey = salesInvoiceStorageKey(companyId);
 
   const [state, dispatch] = useReducer(salesInvoiceReducer, storageKey, (key) =>
@@ -97,56 +99,56 @@ export function useSalesInvoice(companyId: string) {
     dispatch({ type: "selectedRowsDeleted", table });
   }
 
-  //
+  // 
 
   const actions: ToolbarAction[] = [
     {
       id: "save",
-      label: "Save",
+      label: t("voucherSave"),
       icon: "save",
       type: "button",
       variant: "primary",
     },
     {
       id: "new",
-      label: "New",
+      label: t("voucherNew"),
       icon: "new",
     },
     {
       id: "post",
-      label: "Post",
+      label: t("voucherPost"),
       icon: "send",
     },
     {
       id: "delete",
-      label: "Delete",
+      label: t("voucherDelete"),
       icon: "trash",
       variant: "danger",
     },
     {
       id: "search",
-      label: "Search",
+      label: t("voucherSearch"),
       icon: "search",
     },
     {
       id: "print",
-      label: "Print",
+      label: t("voucherPrint"),
       icon: "print",
       onClick: () => window.print(),
     },
     {
       id: "exit",
-      label: "Exit",
+      label: t("voucherExit"),
       icon: "exit",
     },
     {
       id: "archive",
-      label: "Archive",
+      label: t("voucherArchive"),
       icon: "archive",
     },
     {
       id: "restore",
-      label: "Restore",
+      label: t("voucherRestore"),
       icon: "reset",
     },
   ];

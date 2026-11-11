@@ -100,7 +100,7 @@ export function SalesInvoiceForm({ companyId }: { companyId: string }) {
               }}
               onDeleteSelected={() => voucher.deleteSelectedRows("gemstones")}
             />
-          </div>
+          </div> 
 
           {/* aside */}
           <SalesInvoiceAside />

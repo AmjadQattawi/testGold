@@ -130,6 +130,7 @@ export default function WorkspaceTabs({
             }
           >
             <Link
+              // to={path}
               to={path}
               aria-current={path === active ? "page" : undefined}
               className="flex min-h-9 items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -150,6 +151,8 @@ export default function WorkspaceTabs({
                 {title(path)}
               </span>
             </Link>
+
+            {/* close button */}
             {path !== "/home" && (
               <button
                 type="button"

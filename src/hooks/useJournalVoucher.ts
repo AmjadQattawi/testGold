@@ -18,7 +18,7 @@ import {
   newVoucher,
   voucherLineError,
   voucherTotals,
-  units, 
+  units,
   type VoucherDraft,
   type VoucherLine,
 } from "../utils/voucher";
@@ -35,7 +35,7 @@ export function useJournalVoucher(companyId: string) {
   const { draft, saved } = state;
   const [validatedRows, setValidatedRows] = useState<Set<string>>(
     () => new Set(),
-  ); 
+  );
   const totals = voucherTotals(draft.rows);
   const blockedRow = draft.rows.find((row) => voucherLineError(row));
   const rowError =
@@ -64,6 +64,7 @@ export function useJournalVoucher(companyId: string) {
 
   const openDraft = (value: VoucherDraft) =>
     dispatch({ type: "draftOpened", draft: structuredClone(value) });
+
 
   function persist(items: VoucherDraft[], current?: VoucherDraft) {
     try {
@@ -136,7 +137,12 @@ export function useJournalVoucher(companyId: string) {
       icon: "new",
       onClick: () => openDraft(newVoucher()),
     },
-    { id: "post", label: t("voucherPost"), icon: "send", onClick: post },
+    {
+      id: "post",
+      label: t("voucherPost"),
+      icon: "send",
+      onClick: post,
+    },
     {
       id: "delete",
       label: t("voucherDelete"),
@@ -170,7 +176,7 @@ export function useJournalVoucher(companyId: string) {
       disabled: draft.archived,
     },
     {
-      id: "restore",
+      id: "restore", 
       label: t("voucherRestore"),
       icon: "reset",
       onClick: restore,
